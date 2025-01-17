@@ -4,3 +4,5 @@ bot_commands = (
     ('download', 'Скачать сохранённый медиафайл', 'Команда для скачивания медиафайла пользователя'),
     ('upload', 'Получить сохранённый медиафайл', 'Команда для получение медафайла пользователем')
 )
+
+save_dir_path = "C:/Users/Danya/PycharmProjects/AsyncTgBot/bot/downloads/"
