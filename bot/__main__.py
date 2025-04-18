@@ -2,13 +2,15 @@ import os
 import asyncio
 import logging
 import sys
-import token
 
 from aiogram import Dispatcher, Bot
 from aiogram.types import BotCommand
 from bot.commands import register_user_commands
 from bot.commands.constants import bot_commands
 from bot.database import EngineDB
+from bot.database.dbmiddleware import DbMiddleware
+from bot.database.services.dbservice import DatabaseService
+
 
 async def main() -> None:
     commands_for_bot = []
@@ -28,6 +30,10 @@ async def main() -> None:
         db_name='tgbot'
     )
     await start_conn.run_engine()
+    Session = start_conn.get_session_maker()
+    service = DatabaseService(Session)
+    dp['service'] = service
+    dp.update.outer_middleware(DbMiddleware())
     await dp.start_polling(bot)
 
 if __name__ == '__main__':

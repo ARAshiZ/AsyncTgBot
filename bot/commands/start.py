@@ -1,9 +1,19 @@
+import datetime
+
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.commands.constants import welcome
+from bot.database.services.dbservice import DatabaseService
 
+
+async def welcome_user(message: types.Message, service: DatabaseService):
+    user_name = message.from_user.username
+    user_tg_id = message.from_user.id
+    reg_date = datetime.date.today()
+    await service.insert_user(user_name, reg_date, user_tg_id)
+    await create_menu(message)
 
 async def create_menu(message: types.Message):
     keyboard_markup = InlineKeyboardBuilder()
