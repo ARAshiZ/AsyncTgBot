@@ -9,6 +9,8 @@ from bot.commands.insertAbout import insert_about, AboutForm, process_info, proc
 from bot.commands.insertEmployee import EmployeeForm, process_user_id, insert_employee, process_offer
 from bot.commands.insertJobs import insert_jobs, JobsForm, process_title, process_payment, process_high_education, \
     process_result
+from bot.commands.insertSubscribe import insert_subscribe, process_sub_title, process_sub_date, process_sub_price, \
+    SubscribeForm
 from bot.commands.start import welcome_user, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
 from bot.commands.sticker import sticker_command, call_sticker
 from bot.commands.upload import upload_command
@@ -26,6 +28,7 @@ def register_user_commands(router: Router) -> None:
     register_insert_emloyee(router)
     register_insert_job(router)
     register_insert_about(router)
+    register_insert_subscribe(router)
 
     router.callback_query.register(bring_to_main, F.data == 'back')
     router.callback_query.register(call_help, F.data == 'help')
@@ -50,3 +53,10 @@ def register_insert_about(router: Router):
     router.message.register(process_info_title, AboutForm.waiting_for_model_title)
     router.message.register(process_info, AboutForm.waiting_for_model_info)
     router.message.register(process_result, AboutForm.result_state)
+
+def register_insert_subscribe(router: Router):
+    router.message.register(insert_subscribe, Command(commands=['subscribe']))
+    router.message.register(process_sub_title, SubscribeForm.waiting_for_sub_title)
+    router.message.register(process_sub_date, SubscribeForm.waiting_for_sub_term)
+    router.message.register(process_sub_price, SubscribeForm.waiting_for_sub_price)
+    router.message.register(process_result, SubscribeForm.result_state)

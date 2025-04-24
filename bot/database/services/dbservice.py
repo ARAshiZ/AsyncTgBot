@@ -71,5 +71,17 @@ class DatabaseService:
             finally:
                 await db.close()
 
+    async def insert_subscribe(self, title, date, price):
+        async with self.session() as db:
+            try:
+                new_subscribe = Subscribe(subscribe_title=title, subscribe_term=date, subscribe_price=price)
+                db.add(new_subscribe)
+                await db.commit()
+            except Exception as e:
+                await db.rollback()
+                raise e
+            finally:
+                await db.close()
+
     async def get_table_names(self):
         return list(User.metadata.tables.keys())
