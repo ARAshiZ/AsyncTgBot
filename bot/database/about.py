@@ -11,6 +11,6 @@ class About(BaseModel):
     __tablename__ = 'about'
 
     about_id = Column(INTEGER, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    information = Column(VARCHAR(200), default='')
     model_title = Column(VARCHAR(20), default='')
+    information = Column(VARCHAR(200), default='')
     info_create_date = Column(DATE, default=datetime.date.today())

@@ -5,6 +5,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram import F
 from bot.commands.download import download_command
 from bot.commands.help import help_command, call_help
+from bot.commands.insertAbout import insert_about, AboutForm, process_info, process_info_title
 from bot.commands.insertEmployee import EmployeeForm, process_user_id, insert_employee, process_offer
 from bot.commands.insertJobs import insert_jobs, JobsForm, process_title, process_payment, process_high_education, \
     process_result
@@ -24,7 +25,7 @@ def register_user_commands(router: Router) -> None:
     router.message.register(sticker_command, Command(commands=['sticker']))
     register_insert_emloyee(router)
     register_insert_job(router)
-
+    register_insert_about(router)
 
     router.callback_query.register(bring_to_main, F.data == 'back')
     router.callback_query.register(call_help, F.data == 'help')
@@ -43,3 +44,9 @@ def register_insert_job(router: Router):
     router.message.register(process_payment, JobsForm.waiting_for_payment)
     router.message.register(process_high_education, JobsForm.waiting_for_high_education)
     router.message.register(process_result, JobsForm.result_state)
+
+def register_insert_about(router: Router):
+    router.message.register(insert_about, Command(commands=['about']))
+    router.message.register(process_info_title, AboutForm.waiting_for_model_title)
+    router.message.register(process_info, AboutForm.waiting_for_model_info)
+    router.message.register(process_result, AboutForm.result_state)

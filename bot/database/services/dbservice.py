@@ -1,4 +1,6 @@
-from sqlalchemy import select
+from sqlalchemy import select, inspect
+from sqlalchemy.ext.asyncio import AsyncEngine
+
 from bot.database import User, Employee, Job, About, Subscribe
 
 
@@ -56,3 +58,18 @@ class DatabaseService:
                 raise e
             finally:
                 await db.close()
+
+    async def insert_about(self, title, info, date):
+        async with self.session() as db:
+            try:
+                new_about = About(model_title=title, information=info, info_create_date=date)
+                db.add(new_about)
+                await db.commit()
+            except Exception as e:
+                await db.rollback()
+                raise e
+            finally:
+                await db.close()
+
+    async def get_table_names(self):
+        return list(User.metadata.tables.keys())
