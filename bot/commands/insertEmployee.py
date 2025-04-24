@@ -10,7 +10,8 @@ from bot.database.services.dbservice import DatabaseService
 
 class EmployeeForm(StatesGroup):
     waiting_for_user_id = State()
-    waiting_for_position = State()
+    waiting_for_offer = State()
+
 
 async def insert_employee(message: types.Message, service: DatabaseService, state: FSMContext):
     await message.answer('Что бы создать сотрудника, необходимо выбрать пользователя:')
@@ -31,11 +32,11 @@ async def process_user_id(message: types.Message, state: FSMContext):
         return
 
     await state.update_data(user_id=int(message.text))
-    await state.set_state(EmployeeForm.waiting_for_position)
+    await state.set_state(EmployeeForm.waiting_for_offer)
     await message.answer('Введите должность сотрудника:')
 
 
-async def process_position(message: types.Message, state: FSMContext, service: DatabaseService):
+async def process_offer(message: types.Message, state: FSMContext, service: DatabaseService):
     try:
         user_data = await state.get_data()
         user_id = user_data['user_id']

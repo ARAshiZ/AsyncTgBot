@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from bot.database import User, Employee
+from bot.database import User, Employee, Job, About, Subscribe
 
 
 class DatabaseService:
@@ -38,6 +38,18 @@ class DatabaseService:
                 existing_user = await db.get(User, user_id)
                 new_employee = Employee(user_id=existing_user.user_id, employee_offer=offer, employee_date=date)
                 db.add(new_employee)
+                await db.commit()
+            except Exception as e:
+                await db.rollback()
+                raise e
+            finally:
+                await db.close()
+
+    async def insert_job(self, title, payment, high_edu):
+        async with self.session() as db:
+            try:
+                new_job = Job(job_title=title, job_pay=payment, job_have_high_education=high_edu)
+                db.add(new_job)
                 await db.commit()
             except Exception as e:
                 await db.rollback()
