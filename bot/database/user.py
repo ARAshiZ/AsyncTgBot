@@ -12,7 +12,4 @@ class User(BaseModel):
     user_name = Column(VARCHAR(20), unique=False, nullable=True)
     reg_date = Column(DATE, default=datetime.date.today())
     tg_id = Column(INTEGER, unique=True)
-
-
-    def __str__(self) -> str:
-        return f'user: {self.user_id}'
+    employees = relationship("Employee", back_populates="user")

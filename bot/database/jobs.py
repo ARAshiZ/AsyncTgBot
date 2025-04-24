@@ -13,6 +13,6 @@ class Job(BaseModel):
     job_id = Column(INTEGER, primary_key=True, autoincrement=True, unique=True, nullable=False)
     job_title = Column(VARCHAR(20), default='')
     job_pay = Column(NUMERIC(10,2), default=0.00)
-    job_have_highedu = Column(BOOLEAN, default=False)
+    job_have_high_education = Column(BOOLEAN, default=False)
 
 
