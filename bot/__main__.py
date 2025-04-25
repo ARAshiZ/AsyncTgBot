@@ -10,6 +10,7 @@ from bot.commands.constants import bot_commands
 from bot.database import EngineDB
 from bot.database.dbmiddleware import DbMiddleware
 from bot.database.services.dbservice import DatabaseService
+from bot.middlewares.register_check import RegisterCheck
 
 
 async def main() -> None:
@@ -17,6 +18,8 @@ async def main() -> None:
     for cmd in bot_commands:
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
     dp = Dispatcher()
+    dp.message.middleware(RegisterCheck())
+    dp.callback_query.middleware(RegisterCheck())
     bot = Bot(token=os.getenv('token'))
 
     await bot.set_my_commands(commands=commands_for_bot)
@@ -34,7 +37,7 @@ async def main() -> None:
     service = DatabaseService(Session)
     dp['service'] = service
     dp.update.outer_middleware(DbMiddleware())
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, session_maker=Session)
 
 if __name__ == '__main__':
     try:

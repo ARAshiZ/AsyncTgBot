@@ -1,5 +1,7 @@
 __all__ = ['register_user_commands']
 
+from encodings.rot_13 import rot13
+
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
 from aiogram import F
@@ -11,25 +13,28 @@ from bot.commands.insertJobs import insert_jobs, JobsForm, process_title, proces
     process_result
 from bot.commands.insertSubscribe import insert_subscribe, process_sub_title, process_sub_date, process_sub_price, \
     SubscribeForm
-from bot.commands.start import welcome_user, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
+from bot.commands.start import create_menu, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
 from bot.commands.sticker import sticker_command, call_sticker
 from bot.commands.upload import upload_command
+from bot.middlewares.register_check import RegisterCheck
 
 
 def register_user_commands(router: Router) -> None:
 
-    router.message.register(welcome_user, CommandStart())
+    router.message.register(create_menu, CommandStart())
     router.message.register(help_command, Command(commands=['help']))
     router.message.register(download_command, Command(commands=['download']),
                             F.content_type.in_({'photo', 'video', 'audio', 'text'}))
     router.message.register(upload_command, Command(commands=['upload']),
                             F.content_type.in_({'photo', 'video', 'audio', 'text'}))
     router.message.register(sticker_command, Command(commands=['sticker']))
+    router.message.register(RegisterCheck)
     register_insert_emloyee(router)
     register_insert_job(router)
     register_insert_about(router)
     register_insert_subscribe(router)
 
+    router.callback_query.register(RegisterCheck)
     router.callback_query.register(bring_to_main, F.data == 'back')
     router.callback_query.register(call_help, F.data == 'help')
     router.callback_query.register(call_sticker, F.data == 'sticker')
