@@ -2,6 +2,7 @@ import datetime
 from cgitb import handler
 from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
+from aiogram.filters import Command
 from aiogram.types import Message
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,8 +24,10 @@ class RegisterCheck(BaseMiddleware):
             user_name = event.from_user.username
             user_tg_id = event.from_user.id
             reg_date = datetime.date.today()
-            await service.insert_user(user_name, reg_date, user_tg_id)
-            await event.answer('Пользователь добавлен!')
+            flag = True
+            flag = await service.insert_user(user_name, reg_date, user_tg_id, flag)
+            if flag:
+                await event.answer('Пользователь добавлен!')
         except Exception as e:
             await event.answer('Не удалось создать пользователя')
             raise e

@@ -5,6 +5,7 @@ from aiogram.fsm.state import default_state
 from aiogram import Router
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram import F
+from aiohttp.web_middlewares import middleware
 
 from bot.commands.common import cmd_cancel_no_state, cmd_order, cmd_cancel
 from bot.commands.download import download_command
@@ -25,6 +26,7 @@ from bot.middlewares.register_check import RegisterCheck
 
 def register_user_commands(router: Router) -> None:
 
+
     router.message.register(create_menu, CommandStart())
     router.message.register(help_command, Command(commands=['help']))
     router.message.register(download_command, Command(commands=['download']),
@@ -32,13 +34,13 @@ def register_user_commands(router: Router) -> None:
     router.message.register(upload_command, Command(commands=['upload']),
                             F.content_type.in_({'photo', 'video', 'audio', 'text'}))
     router.message.register(sticker_command, Command(commands=['sticker']))
-    router.message.register(RegisterCheck, CommandStart())
     register_insert_emloyee(router)
     register_insert_job(router)
     register_insert_about(router)
     register_insert_subscribe(router)
+    register_orders_command(router)
 
-    router.callback_query.register(RegisterCheck)
+
     router.callback_query.register(bring_to_main, F.data == 'back')
     router.callback_query.register(call_help, F.data == 'help')
     router.callback_query.register(call_sticker, F.data == 'sticker')
@@ -80,4 +82,5 @@ def register_orders_command(router: Router):
     router.message.register(food_choosen_incorrectly, StateFilter('OrderFood:choosing_food_name'))
     router.message.register(food_size_chosen, F.text.in_(available_food_sizes), OrderFood.choosing_food_size)
     router.message.register(food_size_chosen_incorrectly, OrderFood.choosing_food_size)
+
 

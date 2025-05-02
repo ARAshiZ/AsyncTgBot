@@ -1,3 +1,6 @@
+
+from aiogram.types import Message
+
 from sqlalchemy import select, inspect
 from sqlalchemy.ext.asyncio import AsyncEngine
 
@@ -19,15 +22,18 @@ class DatabaseService:
             result = await db.execute(select(User))
             return result.scalars().all()
 
-    async def insert_user(self, name, date, tg_id):
+    async def insert_user(self, name, date, tg_id, flag):
         async with self.session() as db:
             try:
                 exists = await self.check_exists_users(tg_id)
                 if exists:
-                    return
+                    flag = False
+                    return flag
                 new_user = User(user_name=name, reg_date=date, tg_id=tg_id)
                 db.add(new_user)
                 await db.commit()
+                flag = True
+                return flag
             except Exception as e:
                 await db.rollback()
                 raise e
