@@ -32,7 +32,7 @@ def register_user_commands(router: Router) -> None:
     router.message.register(upload_command, Command(commands=['upload']),
                             F.content_type.in_({'photo', 'video', 'audio', 'text'}))
     router.message.register(sticker_command, Command(commands=['sticker']))
-    router.message.register(RegisterCheck)
+    router.message.register(RegisterCheck, CommandStart())
     register_insert_emloyee(router)
     register_insert_job(router)
     register_insert_about(router)
@@ -71,7 +71,7 @@ def register_insert_subscribe(router: Router):
     router.message.register(process_result, SubscribeForm.result_state)
 
 def register_orders_command(router: Router):
-    router.message.register(cmd_order, Command(commands=['oreder']), StateFilter(None))
+    router.message.register(cmd_order, Command(commands=['order']), StateFilter(None))
     router.message.register(cmd_cancel_no_state, F.text.lower() == 'отмена', default_state)
     router.message.register(cmd_cancel, Command(commands=['order']), F.text.lower() == 'отмена')
 
