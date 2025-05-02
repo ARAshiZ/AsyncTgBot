@@ -1,10 +1,12 @@
 __all__ = ['register_user_commands']
 
-from encodings.rot_13 import rot13
+from aiogram.fsm.state import default_state
 
 from aiogram import Router
-from aiogram.filters import CommandStart, Command
+from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram import F
+
+from bot.commands.common import cmd_cancel_no_state, cmd_order, cmd_cancel
 from bot.commands.download import download_command
 from bot.commands.help import help_command, call_help
 from bot.commands.insertAbout import insert_about, AboutForm, process_info, process_info_title
@@ -13,6 +15,8 @@ from bot.commands.insertJobs import insert_jobs, JobsForm, process_title, proces
     process_result
 from bot.commands.insertSubscribe import insert_subscribe, process_sub_title, process_sub_date, process_sub_price, \
     SubscribeForm
+from bot.commands.ordering import available_food_names, OrderFood, food_choosen_incorrectly, cmd_food, food_chosen, \
+    food_size_chosen, available_food_sizes, food_size_chosen_incorrectly
 from bot.commands.start import create_menu, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
 from bot.commands.sticker import sticker_command, call_sticker
 from bot.commands.upload import upload_command
@@ -65,3 +69,15 @@ def register_insert_subscribe(router: Router):
     router.message.register(process_sub_date, SubscribeForm.waiting_for_sub_term)
     router.message.register(process_sub_price, SubscribeForm.waiting_for_sub_price)
     router.message.register(process_result, SubscribeForm.result_state)
+
+def register_orders_command(router: Router):
+    router.message.register(cmd_order, Command(commands=['oreder']), StateFilter(None))
+    router.message.register(cmd_cancel_no_state, F.text.lower() == 'отмена', default_state)
+    router.message.register(cmd_cancel, Command(commands=['order']), F.text.lower() == 'отмена')
+
+    router.message.register(cmd_food, Command(commands=['food']))
+    router.message.register(food_chosen, F.text.in_(available_food_names), OrderFood.choosing_food_name)
+    router.message.register(food_choosen_incorrectly, StateFilter('OrderFood:choosing_food_name'))
+    router.message.register(food_size_chosen, F.text.in_(available_food_sizes), OrderFood.choosing_food_size)
+    router.message.register(food_size_chosen_incorrectly, OrderFood.choosing_food_size)
+

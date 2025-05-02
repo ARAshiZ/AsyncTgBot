@@ -5,6 +5,7 @@ import sys
 
 from aiogram import Dispatcher, Bot
 from aiogram.types import BotCommand
+from aiogram.fsm.storage.memory import MemoryStorage
 from bot.commands import register_user_commands
 from bot.commands.constants import bot_commands
 from bot.database import EngineDB
@@ -13,11 +14,12 @@ from bot.database.services.dbservice import DatabaseService
 from bot.middlewares.register_check import RegisterCheck
 
 
+
 async def main() -> None:
     commands_for_bot = []
     for cmd in bot_commands:
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
-    dp = Dispatcher()
+    dp = Dispatcher(storage=MemoryStorage())
     dp.message.middleware(RegisterCheck())
     dp.callback_query.middleware(RegisterCheck())
     bot = Bot(token=os.getenv('token'))
