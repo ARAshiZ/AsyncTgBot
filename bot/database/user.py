@@ -13,3 +13,6 @@ class User(BaseModel):
     reg_date = Column(DATE, default=datetime.date.today())
     tg_id = Column(BigInteger, unique=True)
     employees = relationship("Employee", back_populates="user")
+
+    def __str__(self) -> str:
+        return f'user: {self.tg_id}'

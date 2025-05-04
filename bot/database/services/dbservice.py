@@ -5,6 +5,7 @@ from sqlalchemy import select, inspect
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from bot.database import User, Employee, Job, About, Subscribe
+from bot.misc import redis
 
 
 class DatabaseService:
@@ -12,28 +13,26 @@ class DatabaseService:
     def __init__(self, session_maker):
         self.session = session_maker
 
-    async def check_exists_users(self, tg_id):
+    async def is_user_exists(self, tg_id):
         async with self.session() as db:
-            result = await db.execute(select(User).where(User.tg_id == tg_id))
-            return result.scalar_one_or_none() is not None
+            result = await redis.get(name=str(tg_id))
+            if not result:
+                return bool(result)
+            else:
+                return bool(result)
 
     async def exists_users(self):
         async with self.session() as db:
             result = await db.execute(select(User))
             return result.scalars().all()
 
-    async def insert_user(self, name, date, tg_id, flag):
+    async def insert_user(self, name, date, tg_id):
         async with self.session() as db:
             try:
-                exists = await self.check_exists_users(tg_id)
-                if exists:
-                    flag = False
-                    return flag
                 new_user = User(user_name=name, reg_date=date, tg_id=tg_id)
                 db.add(new_user)
+                await redis.set(name=str(tg_id), value=1)
                 await db.commit()
-                flag = True
-                return flag
             except Exception as e:
                 await db.rollback()
                 raise e

@@ -12,6 +12,7 @@ from bot.database import User
 from bot.database.services.dbservice import DatabaseService
 
 
+
 class RegisterCheck(BaseMiddleware):
     async def __call__(
         self,
@@ -21,13 +22,12 @@ class RegisterCheck(BaseMiddleware):
     ) -> Any:
         try:
             service = data['service']
-            user_name = event.from_user.username
-            user_tg_id = event.from_user.id
-            reg_date = datetime.date.today()
-            flag = True
-            flag = await service.insert_user(user_name, reg_date, user_tg_id, flag)
-            if flag:
-                await event.answer('Пользователь добавлен!')
+            if not await service.is_user_exists(event.from_user.id):
+                user_name = event.from_user.username
+                user_tg_id = event.from_user.id
+                reg_date = datetime.date.today()
+                await service.insert_user(user_name, reg_date, user_tg_id)
+                await event.answer('Пользователь зарегестрирован')
         except Exception as e:
             await event.answer('Не удалось создать пользователя')
             raise e
