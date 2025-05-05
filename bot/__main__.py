@@ -23,8 +23,6 @@ async def main() -> None:
     for cmd in bot_commands:
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
     dp = Dispatcher(storage=RedisStorage(redis=redis))
-    dp.message.middleware(RegisterCheck())
-    dp.callback_query.middleware(RegisterCheck())
     bot = Bot(token=os.getenv('token'))
 
     await bot.set_my_commands(commands=commands_for_bot)
@@ -41,6 +39,8 @@ async def main() -> None:
     Session = start_conn.get_session_maker()
     service = DatabaseService(Session)
     dp['service'] = service
+    dp.message.middleware(RegisterCheck())
+    dp.callback_query.middleware(RegisterCheck())
     dp.update.outer_middleware(DbMiddleware())
     await dp.start_polling(bot, session_maker=Session)
 
