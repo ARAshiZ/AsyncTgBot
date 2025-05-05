@@ -46,8 +46,6 @@ def register_user_commands(router: Router) -> None:
     router.callback_query.register(create_reaply_keyboard1, F.data == 'create_reaply1')
     router.callback_query.register(create_reaply_keyboard2, F.data == 'create_reaply2')
 
-    router.message.register(RegisterCheck)
-    router.callback_query.register(RegisterCheck)
 
 
 def register_insert_emloyee(router: Router):
