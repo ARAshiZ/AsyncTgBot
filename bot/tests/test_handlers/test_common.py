@@ -55,3 +55,9 @@ async def test_food_chosen_command():
         reply_markup=make_row_keyboard(available_food_sizes)
     )
     state.set_state.assert_called_once_with(OrderFood.choosing_food_size)
+
+@pytest.mark.asyncio
+async def test_start_text():
+    message = AsyncMock(text='/start')
+
+    assert message.text == '/start'
