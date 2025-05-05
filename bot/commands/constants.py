@@ -13,4 +13,4 @@ stickers = ['CAACAgIAAxkBAANkZ5JBjRgXv0GbaASdOGMW2MhWMywAAsI0AAJo92BK8JU8G-7GwOU
 
 save_dir_path = "C:/Users/Danya/PycharmProjects/AsyncTgBot/bot/downloads/"
 
-welcome = 'Привет, я бот который создан для изучения билеотеки aiogram!\n Выберите действие:'
+welcome = 'Привет! Выбери действие:'

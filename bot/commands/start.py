@@ -5,38 +5,12 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQu
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from bot.commands.constants import welcome
+from bot.commands.keyboards import keyboard_builder
 from bot.database.services.dbservice import DatabaseService
 
 
 async def create_menu(message: types.Message):
-    keyboard_markup = InlineKeyboardBuilder()
-
-    keyboard_markup.button(
-        text='Помощь',
-        callback_data='help',
-        user_id=message.from_user.id
-    )
-    keyboard_markup.button(
-        text='Стикер',
-        callback_data='sticker',
-        user_id=message.from_user.id
-    )
-    keyboard_markup.button(
-        text='В меню',
-        callback_data='back',
-        user_id=message.from_user.id
-    )
-    keyboard_markup.button(
-        text='Cоздать Reaply клавиатуру',
-        callback_data='create_reaply1',
-        user_id=message.from_user.id
-    )
-    keyboard_markup.button(
-        text='Cоздать Reaply клавиатуру',
-        callback_data='create_reaply2',
-        user_id=message.from_user.id
-    )
-    await message.answer(welcome, reply_markup=keyboard_markup.as_markup())
+    await message.answer(welcome, reply_markup=keyboard_builder.as_markup())
 
 async def create_reaply_keyboard1(call: CallbackQuery):
     button1 = KeyboardButton(text="1")
