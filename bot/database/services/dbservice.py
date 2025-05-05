@@ -4,8 +4,8 @@ from aiogram.types import Message
 from sqlalchemy import select, inspect
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from bot.database import User, Employee, Job, About, Subscribe
-from bot.misc import redis
+from database import User, Employee, Job, About, Subscribe
+from misc import redis
 
 
 class DatabaseService:

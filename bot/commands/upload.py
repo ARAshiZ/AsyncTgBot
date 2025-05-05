@@ -3,7 +3,7 @@ from aiogram import types, Bot
 from aiogram.filters import CommandObject
 from aiogram.types import InputFile, FSInputFile
 
-from bot.commands.constants import save_dir_path
+from commands.constants import save_dir_path
 
 async def upload_command(message: types.Message, command: CommandObject, bot: Bot):
     files = [f for f in os.listdir(save_dir_path) if os.path.isfile(os.path.join(save_dir_path, f))]

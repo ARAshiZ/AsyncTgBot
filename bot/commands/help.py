@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.filters import CommandObject
-from bot.commands.constants import bot_commands
+from commands.constants import bot_commands
 
 
 async def help_command(message: types.Message, command: CommandObject):

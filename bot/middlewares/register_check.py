@@ -4,12 +4,7 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.filters import Command
 from aiogram.types import Message
-from sqlalchemy import select, Result
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import sessionmaker
 
-from bot.database import User
-from bot.database.services.dbservice import DatabaseService
 
 
 

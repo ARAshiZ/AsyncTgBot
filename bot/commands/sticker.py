@@ -1,8 +1,8 @@
 import random
 from aiogram import types
 
-from bot.commands import bring_to_main
-from bot.commands.constants import stickers, welcome
+from commands import bring_to_main
+from commands.constants import stickers, welcome
 import asyncio
 
 

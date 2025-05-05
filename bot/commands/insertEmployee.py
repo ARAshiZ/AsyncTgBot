@@ -5,7 +5,7 @@ from aiogram import types
 import asyncio
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from bot.database.services.dbservice import DatabaseService
+from database.services.dbservice import DatabaseService
 
 
 class EmployeeForm(StatesGroup):

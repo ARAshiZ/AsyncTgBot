@@ -1,6 +1,6 @@
 import os
 from aiogram import types, Bot
-from bot.commands.constants import save_dir_path
+from commands.constants import save_dir_path
 
 
 async def download_command(message: types.Message, bot: Bot):

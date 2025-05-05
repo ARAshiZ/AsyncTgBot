@@ -1,0 +1,36 @@
+
+
+services:
+  redis:
+    image: redis:alpine
+    command:
+      - redis-server
+    env_file:
+      - ../env/.env
+    restart: on-failure
+    ports:
+      - "6379:6379"
+  db:
+    image: postgres:latest
+    env_file:
+      - ../env/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432"
+  tg:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    command: python __main__.py
+    env_file:
+      - ../env/.env
+    restart: always
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./bot/:/usr/src/bot
+volumes:
+  pgdata:

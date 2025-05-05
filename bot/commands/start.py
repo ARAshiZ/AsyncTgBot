@@ -4,9 +4,9 @@ from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.commands.constants import welcome
-from bot.commands.keyboards import keyboard_builder
-from bot.database.services.dbservice import DatabaseService
+from commands.constants import welcome
+from commands.keyboards import keyboard_builder
+from database.services.dbservice import DatabaseService
 
 
 async def create_menu(message: types.Message):

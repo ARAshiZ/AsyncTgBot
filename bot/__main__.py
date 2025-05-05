@@ -6,16 +6,14 @@ import sys
 from aiogram import Dispatcher, Bot
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import BotCommand
-from aiogram.fsm.storage.memory import MemoryStorage
-from redis import Redis
 
-from bot.commands import register_user_commands
-from bot.commands.constants import bot_commands
-from bot.database import EngineDB
-from bot.database.dbmiddleware import DbMiddleware
-from bot.database.services.dbservice import DatabaseService
-from bot.middlewares.register_check import RegisterCheck
-from bot.misc import redis
+from commands import register_user_commands
+from commands.constants import bot_commands
+from database import EngineDB
+from database.dbmiddleware import DbMiddleware
+from database.services.dbservice import DatabaseService
+from middlewares.register_check import RegisterCheck
+from misc import redis
 
 
 async def main() -> None:
@@ -31,7 +29,7 @@ async def main() -> None:
         driver='postgresql+asyncpg',
         username='postgres',
         password='5371',
-        host='localhost',
+        host='host.docker.internal',
         port=5432,
         db_name='tgbot'
     )

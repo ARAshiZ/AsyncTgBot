@@ -5,23 +5,23 @@ from aiogram.fsm.state import default_state
 from aiogram import Router
 from aiogram.filters import CommandStart, Command, StateFilter
 from aiogram import F
-from aiohttp.web_middlewares import middleware
 
-from bot.commands.common import cmd_cancel_no_state, cmd_order, cmd_cancel
-from bot.commands.download import download_command
-from bot.commands.help import help_command, call_help
-from bot.commands.insertAbout import insert_about, AboutForm, process_info, process_info_title
-from bot.commands.insertEmployee import EmployeeForm, process_user_id, insert_employee, process_offer
-from bot.commands.insertJobs import insert_jobs, JobsForm, process_title, process_payment, process_high_education, \
+
+from commands.common import cmd_cancel_no_state, cmd_order, cmd_cancel
+from commands.download import download_command
+from commands.help import help_command, call_help
+from commands.insertAbout import insert_about, AboutForm, process_info, process_info_title
+from commands.insertEmployee import EmployeeForm, process_user_id, insert_employee, process_offer
+from commands.insertJobs import insert_jobs, JobsForm, process_title, process_payment, process_high_education, \
     process_result
-from bot.commands.insertSubscribe import insert_subscribe, process_sub_title, process_sub_date, process_sub_price, \
+from commands.insertSubscribe import insert_subscribe, process_sub_title, process_sub_date, process_sub_price, \
     SubscribeForm
-from bot.commands.ordering import available_food_names, OrderFood, food_choosen_incorrectly, cmd_food, food_chosen, \
+from commands.ordering import available_food_names, OrderFood, food_choosen_incorrectly, cmd_food, food_chosen, \
     food_size_chosen, available_food_sizes, food_size_chosen_incorrectly
-from bot.commands.start import create_menu, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
-from bot.commands.sticker import sticker_command, call_sticker
-from bot.commands.upload import upload_command
-from bot.middlewares.register_check import RegisterCheck
+from commands.start import create_menu, bring_to_main, create_reaply_keyboard1, create_reaply_keyboard2
+from commands.sticker import sticker_command, call_sticker
+from commands.upload import upload_command
+from middlewares.register_check import RegisterCheck
 
 
 def register_user_commands(router: Router) -> None:
