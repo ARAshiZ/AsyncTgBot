@@ -15,6 +15,13 @@ class DatabaseService:
 
     async def is_user_exists(self, tg_id):
         async with self.session() as db:
+            check_user_exist = (await db.execute(select(User).where(User.tg_id == tg_id))).scalar()
+            if check_user_exist:
+                await redis.delete(str(tg_id))
+                await redis.set(name=str(tg_id), value=1)
+            else:
+                await redis.delete(str(tg_id))
+                redis.set(name=str(tg_id), value=0)
             result = await redis.get(name=str(tg_id))
             if not result:
                 return bool(result)
